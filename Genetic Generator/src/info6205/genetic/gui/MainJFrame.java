@@ -25,6 +25,13 @@ public class MainJFrame extends javax.swing.JFrame {
     
     public MainJFrame() {
         initComponents();
+        randomPasswordTextArea.setEditable(false);
+        randomPasswordTextArea.setEnabled(false);
+        passwordLengthComboBox.removeAllItems();
+        passwordLengthComboBox.addItem("8");
+        passwordLengthComboBox.addItem("12");
+        passwordLengthComboBox.addItem("16");
+        
     }
 
     /**
@@ -50,7 +57,10 @@ public class MainJFrame extends javax.swing.JFrame {
         phoneNoTF = new javax.swing.JTextField();
         generatePasswordButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        generatedTextView = new javax.swing.JLabel();
+        randomPasswordLabel = new java.awt.Label();
+        randomPasswordTextArea = new java.awt.TextArea();
+        passwordLengthJLabel = new java.awt.Label();
+        passwordLengthComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,7 +88,6 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fNameTF)
                     .addComponent(lNameTF)
                     .addComponent(dobTF)
                     .addComponent(emailTF)
@@ -91,7 +100,8 @@ public class MainJFrame extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel6))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(generatePasswordButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(generatePasswordButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fNameTF))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -124,22 +134,41 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jSplitPane1.setLeftComponent(jPanel1);
 
+        randomPasswordLabel.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        randomPasswordLabel.setText("Random Password");
+
+        passwordLengthJLabel.setText("Password length");
+
+        passwordLengthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(generatedTextView, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addGap(59, 59, 59)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(passwordLengthJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(randomPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(randomPasswordTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(passwordLengthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(generatedTextView, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(116, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(randomPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(passwordLengthJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(passwordLengthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(randomPasswordTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(104, Short.MAX_VALUE))
         );
+
+        passwordLengthJLabel.getAccessibleContext().setAccessibleName("Password length");
 
         jSplitPane1.setRightComponent(jPanel2);
 
@@ -167,7 +196,9 @@ public class MainJFrame extends javax.swing.JFrame {
             String phoneNo = phoneNoTF.getText();
             Salt salt = new Salt();
             randomPassword = salt.generateRandomPassword(fName, lName, dob, email, phoneNo);
-            generatedTextView.setText("Randomly Generated Password: \n" + randomPassword);
+            randomPasswordTextArea.setText(randomPassword);
+            randomPasswordTextArea.setEditable(false);
+            randomPasswordTextArea.setEnabled(false);
         } catch (Exception ex) {
             Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
         } 
@@ -213,7 +244,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField emailTF;
     private javax.swing.JTextField fNameTF;
     private javax.swing.JButton generatePasswordButton;
-    private javax.swing.JLabel generatedTextView;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -223,6 +253,10 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTextField lNameTF;
+    private javax.swing.JComboBox<String> passwordLengthComboBox;
+    private java.awt.Label passwordLengthJLabel;
     private javax.swing.JTextField phoneNoTF;
+    private java.awt.Label randomPasswordLabel;
+    private java.awt.TextArea randomPasswordTextArea;
     // End of variables declaration//GEN-END:variables
 }
