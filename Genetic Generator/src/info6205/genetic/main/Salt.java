@@ -26,7 +26,10 @@ public class Salt {
     {
         String saltString = readFile();
         String targetString = concatenateStrings(fName, lName, dob, email, phoneNo, saltString);
-        return null;
+        Genetic genetics = new Genetic();
+        String randomPassword = genetics.generateRandomPassword(targetString);
+        System.out.println("Random password - " + randomPassword);
+        return randomPassword;
     }
 
     private String readFile() {
@@ -48,7 +51,7 @@ public class Salt {
             while( (line=br.readLine())!=null )
             {
                 lineCount++;
-                System.out.println(lineCount+"\t"+line);
+//                System.out.println(lineCount+"\t"+line);
             }
             int randomLineNumber = new Random().nextInt(lineCount);
             System.out.println("Random line no : "+randomLineNumber); 
