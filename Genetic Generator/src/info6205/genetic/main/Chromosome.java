@@ -16,15 +16,15 @@ public class Chromosome implements Comparable<Chromosome> {
     private final int fitness;
 //    Genetic g = new Genetic();
     static String targetString = Genetic.getTargetString();
-    private static final char[] TARGET_GENE = targetString.toCharArray(); //should be  static. need to figure this one out.
-//    private static final char[] TARGET_GENE = "Professor Robin Charles Hillyard loves Knuth and hates Sedgewick".toCharArray();
+    private static char[] TARGET_GENE = targetString.toCharArray(); //should be  static. need to figure this one out.
+//    private static final char[] TARGET_GENE = "Professor Robin Charles Hillyard loves Knuth and Sedgewick".toCharArray();
     private static final Random rand = new Random(System.currentTimeMillis());
     
     public Chromosome(String gene) {
 	this.gene = gene;
 	this.fitness = calculateFitness(gene);
     }
-
+    
     public String getGene() {
         return gene;
     }
@@ -58,7 +58,7 @@ public class Chromosome implements Comparable<Chromosome> {
 	return new StringBuilder().append(gene).append(fitness).toString().hashCode();
     }
 
-    static Chromosome generateRandom() {
+    public static Chromosome generateRandom() {
         char[] arr = new char[TARGET_GENE.length];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (char) (rand.nextInt(90) + 32);
@@ -67,12 +67,12 @@ public class Chromosome implements Comparable<Chromosome> {
     }
     
     private int calculateFitness(String gene) {
-        int fitness = 0;
+        int fitnessValue = 0;
 	char[] arr  = gene.toCharArray();
 	for (int i = 0; i < arr.length; i++) {
-            fitness += Math.abs(((int) arr[i]) - ((int) TARGET_GENE[i]));
+            fitnessValue += Math.abs(((int) arr[i]) - ((int) TARGET_GENE[i]));
 	}
-        return fitness;
+        return fitnessValue;
     }
     
     public Chromosome mutate() {
@@ -83,18 +83,18 @@ public class Chromosome implements Comparable<Chromosome> {
 	return new Chromosome(String.valueOf(arr));
     }
 
-    Chromosome[] mate(Chromosome parent) {
+    public Chromosome[] mate(Chromosome parent) {
         // Convert the genes to arrays to make thing easier.
 	char[] arr1  = gene.toCharArray();
 	char[] arr2  = parent.gene.toCharArray();
-	//Randomly selecting the pivot point
+	//Randomly select the pivot point
         int pivot    = rand.nextInt(arr1.length);
 	char[] child1 = new char[gene.length()];
 	char[] child2 = new char[gene.length()];
-        //First Child
+        //Generate First Child
 	System.arraycopy(arr1, 0, child1, 0, pivot);
 	System.arraycopy(arr2, pivot, child1, pivot, (child1.length - pivot));
-        //Second Child
+        //Generate Second Child
 	System.arraycopy(arr2, 0, child2, 0, pivot);
 	System.arraycopy(arr1, pivot, child2, pivot, (child2.length - pivot));
         return new Chromosome[] { new Chromosome(String.valueOf(child1)), new Chromosome(String.valueOf(child2))}; 

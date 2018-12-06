@@ -7,9 +7,15 @@ package info6205.genetic.gui;
 
 import info6205.genetic.main.Genetic;
 import info6205.genetic.main.Salt;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,16 +27,41 @@ public class MainJFrame extends javax.swing.JFrame {
      * Creates new form MainJFrame
      */
     
+    
     String randomPassword;
+    
+    //Juhi
+    private static final String EMAIL_PATTERN = "^[A-Za-z0-9][A-Za-z0-9_]+@(.+)$";
+    /*
+    1) A-Z characters allowed
+    2) a-z characters allowed
+    3) 0-9 numbers allowed
+    4) Additionally email may contain only an underscore(_)
+    5) Rest all characters are not allowed
+    */
+    
+    private static final String DOB_PATTERN = "^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{4}$";
+    
+    private Pattern pattern;
+    private Matcher matcher;
     
     public MainJFrame() {
         initComponents();
         randomPasswordTextArea.setEditable(false);
-        randomPasswordTextArea.setEnabled(false);
         passwordLengthComboBox.removeAllItems();
         passwordLengthComboBox.addItem("8");
         passwordLengthComboBox.addItem("12");
         passwordLengthComboBox.addItem("16");
+        
+        passwordLengthComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                    String randomPasswordLength = generateRandomPasswordLength(randomPassword);
+                    randomPasswordTextArea.setText(randomPasswordLength);
+                }
+            }
+        });
         
     }
 
@@ -163,12 +194,10 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(passwordLengthJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(passwordLengthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
                 .addComponent(randomPasswordTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addGap(74, 74, 74))
         );
-
-        passwordLengthJLabel.getAccessibleContext().setAccessibleName("Password length");
 
         jSplitPane1.setRightComponent(jPanel2);
 
@@ -194,11 +223,39 @@ public class MainJFrame extends javax.swing.JFrame {
             String dob = dobTF.getText();
             String email = emailTF.getText();
             String phoneNo = phoneNoTF.getText();
+            
+            
+            //Juhi start
+            if(checkEmptyOrNull(fName) || checkEmptyOrNull(lName) || checkEmptyOrNull(dob) || checkEmptyOrNull(email) || checkEmptyOrNull(phoneNo))
+            {
+                JOptionPane.showMessageDialog(null, "Field cannot be empty");
+                return;
+            }
+            if(!emailValidator(email))
+            {
+                JOptionPane.showMessageDialog(null,"Please enter valid email!!!!");
+                return;
+            }
+            if(!dateValidator(dob))
+            {
+                JOptionPane.showMessageDialog(null,"Please enter date of birth in proper format!!!!");
+                return;
+            }
+            
+            if(phoneNo.length()!=10 || !phoneNo.matches("[0-9]+"))
+            {
+                JOptionPane.showMessageDialog(null,"Please enter valid phone number!!!!");
+                return;
+            }
+            //Juhi end
+            
+            
             Salt salt = new Salt();
             randomPassword = salt.generateRandomPassword(fName, lName, dob, email, phoneNo);
-            randomPasswordTextArea.setText(randomPassword);
+            //Juhi
+            String randomPasswordLength = generateRandomPasswordLength(randomPassword);
+            randomPasswordTextArea.setText(randomPasswordLength);
             randomPasswordTextArea.setEditable(false);
-            randomPasswordTextArea.setEnabled(false);
         } catch (Exception ex) {
             Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
         } 
@@ -259,4 +316,59 @@ public class MainJFrame extends javax.swing.JFrame {
     private java.awt.Label randomPasswordLabel;
     private java.awt.TextArea randomPasswordTextArea;
     // End of variables declaration//GEN-END:variables
+
+    
+    //Juhi
+    private String generateRandomPasswordLength(String randomPassword) {
+        
+        if(randomPassword!=null)
+        {
+            int desiredPassLength =  Integer.parseInt(passwordLengthComboBox.getSelectedItem().toString());
+            int randomPasswordLength = randomPassword.length();
+            StringBuilder randomPasswordLengthStr = new StringBuilder();
+
+            for(int i = 0 ; i < desiredPassLength ; i++)
+            {
+                int randomIndex = new Random().nextInt(randomPasswordLength);
+                if(i%4==0 && i!=0)
+                {
+                    randomPasswordLengthStr.append("-");
+                }
+                randomPasswordLengthStr.append(randomPassword.charAt(randomIndex));
+            }
+            return randomPasswordLengthStr.toString();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    //Juhi
+    private boolean checkEmptyOrNull(String str) {
+        if(str==null || str.equalsIgnoreCase(""))
+            return true;
+        return false;
+    }
+    
+    //Juhi
+    public boolean validate(final String stringToValidate){  
+        matcher = pattern.matcher(stringToValidate);
+	return matcher.matches(); 	    
+    }
+
+    //Juhi
+    private boolean emailValidator(String email) {
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        return validate(email);
+    }
+
+    //Juhi
+    private boolean dateValidator(String dob) {
+        pattern = Pattern.compile(DOB_PATTERN);
+        return validate(dob);
+    }
+    
+    
+    
 }

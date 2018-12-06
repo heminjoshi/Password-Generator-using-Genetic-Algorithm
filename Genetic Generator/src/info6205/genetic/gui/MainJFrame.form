@@ -178,9 +178,9 @@
                       <Component id="passwordLengthJLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="passwordLengthComboBox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                      <EmptySpace pref="100" max="32767" attributes="0"/>
                       <Component id="randomPasswordTextArea" min="-2" pref="132" max="-2" attributes="0"/>
-                      <EmptySpace pref="104" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -200,9 +200,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Password length"/>
               </Properties>
-              <AccessibilityProperties>
-                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Password length"/>
-              </AccessibilityProperties>
             </Component>
             <Component class="javax.swing.JComboBox" name="passwordLengthComboBox">
               <Properties>

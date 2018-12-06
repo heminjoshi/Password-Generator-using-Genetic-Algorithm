@@ -18,23 +18,23 @@ public class Population {
     private float elitism;
     private float mutation;
     private float crossover;
-    private Chromosome[] popArr;
+    private Chromosome[] populationArray;
     
-    public Population(int size, float crossoverRatio, float elitismRatio, float mutationRatio) {
-        this.crossover = crossoverRatio;
-        this.elitism = elitismRatio;
-        this.mutation = mutationRatio;
-        this.popArr = new Chromosome[size];
+    public Population(int size, float crossover, float elitism, float mutation) {
+        this.crossover = crossover;
+        this.elitism = elitism;
+        this.mutation = mutation;
+        this.populationArray = new Chromosome[size];
         for (int i = 0; i < size; i++) {
-            this.popArr[i] = Chromosome.generateRandom();
+            this.populationArray[i] = Chromosome.generateRandom();
         }
-        Arrays.sort(this.popArr);
+        Arrays.sort(this.populationArray);
     }
     
     public void evolve() {
-        Chromosome[] buffer = new Chromosome[popArr.length];
-        int populationCopy = Math.round(popArr.length * elitism);
-        System.arraycopy(popArr, 0, buffer, 0, populationCopy);
+        Chromosome[] buffer = new Chromosome[populationArray.length];
+        int populationCopy = Math.round(populationArray.length * elitism);
+        System.arraycopy(populationArray, 0, buffer, 0, populationCopy);
         while (populationCopy < buffer.length) { 
             if (rand.nextFloat() <= crossover) {
                 Chromosome[] parents = selectParents();
@@ -59,22 +59,22 @@ public class Population {
             else { 
                 // No crossover. Check if mutation should occur.
                 if (rand.nextFloat() <= mutation) {
-                    buffer[populationCopy] = popArr[populationCopy].mutate();
+                    buffer[populationCopy] = populationArray[populationCopy].mutate();
                 } 
                 else {
-                    buffer[populationCopy] = popArr[populationCopy];
+                    buffer[populationCopy] = populationArray[populationCopy];
                 }
             }
             ++populationCopy;
         }
         //Sorting on the basis of fitness
 	Arrays.sort(buffer);	
-	popArr = buffer;
+	populationArray = buffer;
     }
     
     public Chromosome[] getPopulation() {
-	Chromosome[] arr = new Chromosome[popArr.length];
-	System.arraycopy(popArr, 0, arr, 0, popArr.length);
+	Chromosome[] arr = new Chromosome[populationArray.length];
+	System.arraycopy(populationArray, 0, arr, 0, populationArray.length);
 	return arr;
     }
     
@@ -92,13 +92,13 @@ public class Population {
 
     private Chromosome[] selectParents() {
 	Chromosome[] parents = new Chromosome[2];
-	//On the basis of tournament selection, selecting two parents randomly
+	//On the basis of tournament selection, select two parents randomly
 	for (int i = 0; i < 2; i++) {
-            parents[i] = popArr[rand.nextInt(popArr.length)];
+            parents[i] = populationArray[rand.nextInt(populationArray.length)];
             for (int j = 0; j < TOURNAMENT_SIZE; j++) {
-		int randomLength = rand.nextInt(popArr.length);
-		if (popArr[randomLength].compareTo(parents[i]) < 0) {
-                    parents[i] = popArr[randomLength];
+		int randomLength = rand.nextInt(populationArray.length);
+		if (populationArray[randomLength].compareTo(parents[i]) < 0) {
+                    parents[i] = populationArray[randomLength];
 		}
             }
 	}

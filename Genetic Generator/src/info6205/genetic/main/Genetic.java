@@ -10,25 +10,30 @@ package info6205.genetic.main;
  * @author hemin
  */
 public class Genetic {
-    final int populationSize = 1000;
-    final int maxGenerations = 10000;
-    final float crossoverRatio = 0.8f;
-    final float elitismRatio = 0.1f;
-    final float mutationRatio = 0.03f;
+    final int seedPopulation = 1000;
+    final int maxNoOfGenerations = 10000;
+    final float crossoverRate = 0.5f;
+    final float elitismRate = 0.1f;
+    final float mutationRate = 0.03f;
     long startTime = System.currentTimeMillis();
     static String targetString ;
 
     public static String getTargetString() {
         return targetString;
     }
+    
+    public static void setTargetString(String string)
+    {
+        targetString = string;
+    }
 
     String generateRandomPassword(String targetString) {
         String randomPassword = null;
         this.targetString = targetString;
-        Population pop = new Population(populationSize, crossoverRatio, elitismRatio, mutationRatio);
+        Population pop = new Population(seedPopulation, crossoverRate, elitismRate, mutationRate);
         int i = 0;
 	Chromosome best = pop.getPopulation()[0];
-        while ((i++ <= maxGenerations) && (best.getFitness() != 0)) {
+        while ((i++ <= maxNoOfGenerations) && (best.getFitness() != 0)) {
             if(i == 5)
                 randomPassword = best.getGene();
             System.out.println("Generation " + i + ": " + best.getGene() + " Fitness " + best.getFitness());
