@@ -30,7 +30,8 @@ public class MainJFrame extends javax.swing.JFrame {
     
     String randomPassword;
     
-    //Juhi
+    //Juhi Pareek code start
+    //Juhi Pareek regex validation added
     private static final String EMAIL_PATTERN = "^[A-Za-z0-9][A-Za-z0-9_]+@(.+)$";
     /*
     1) A-Z characters allowed
@@ -48,6 +49,9 @@ public class MainJFrame extends javax.swing.JFrame {
     public MainJFrame() {
         initComponents();
         randomPasswordTextArea.setEditable(false);
+        
+        //Juhi Pareek Variable Password length feature added
+        
         passwordLengthComboBox.removeAllItems();
         passwordLengthComboBox.addItem("8");
         passwordLengthComboBox.addItem("12");
@@ -318,7 +322,7 @@ public class MainJFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     
-    //Juhi
+    //Juhi Pareek code
     private String generateRandomPasswordLength(String randomPassword) {
         
         if(randomPassword!=null)
@@ -343,27 +347,30 @@ public class MainJFrame extends javax.swing.JFrame {
             return null;
         }
     }
+    
+    //Juhi Email, dob, phone number and null validator added
+    
 
-    //Juhi
+    //Juhi Pareek code
     private boolean checkEmptyOrNull(String str) {
         if(str==null || str.equalsIgnoreCase(""))
             return true;
         return false;
     }
     
-    //Juhi
+    //Juhi Pareek code
     public boolean validate(final String stringToValidate){  
         matcher = pattern.matcher(stringToValidate);
 	return matcher.matches(); 	    
     }
 
-    //Juhi
+    //Juhi Pareek code
     private boolean emailValidator(String email) {
         pattern = Pattern.compile(EMAIL_PATTERN);
         return validate(email);
     }
 
-    //Juhi
+    //Juhi Pareek code
     private boolean dateValidator(String dob) {
         pattern = Pattern.compile(DOB_PATTERN);
         return validate(dob);

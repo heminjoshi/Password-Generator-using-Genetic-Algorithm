@@ -15,6 +15,8 @@ import org.junit.Test;
  *
  * @author Juhi
  */
+
+//Juhi Pareek test cases
 public class ChromosomeTest {
     
     @Test
