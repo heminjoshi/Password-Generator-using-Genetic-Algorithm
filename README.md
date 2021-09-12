@@ -1,4 +1,4 @@
-# INFO6205_111
+# Password Generator using Genetic Algorithm
 
 A brute-force password cracking attack might well suss out a password like “Superman”, but it will fail to
 guess in finite time when the password is something like jio9-md@5-7$ol-qma8. Using a random
